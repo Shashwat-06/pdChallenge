@@ -1,7 +1,7 @@
 import GlobalSidebar from "@/components/GlobalSidebar";
+import MobileNavbar from "@/components/MobileNavbar";
 import ChallengeCard from "@/components/ChallengeCard";
 
-// The official Google 'G' Logo
 const GoogleIcon = (
   <svg viewBox="0 0 24 24" width="24" height="24">
     <path
@@ -23,7 +23,6 @@ const GoogleIcon = (
   </svg>
 );
 
-// Official n8n Logo pulled safely via Favicon CDN
 const N8nIcon = (
   <img
     src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://n8n.io&size=256"
@@ -32,7 +31,6 @@ const N8nIcon = (
   />
 );
 
-// Official Clay Logo pulled safely via Favicon CDN
 const ClayIcon = (
   <img
     src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://clay.com&size=256"
@@ -43,23 +41,23 @@ const ClayIcon = (
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen bg-white text-black">
+    // Changed flex direction so it stacks on mobile and is side-by-side on desktop
+    <div className="flex flex-col md:flex-row min-h-screen bg-white text-black">
       <GlobalSidebar />
+      <MobileNavbar />
       <main className="flex-1 p-6 md:p-12 md:max-w-6xl mx-auto overflow-y-auto">
-        {/* Project Destined Branded Hero Section */}
-        <header className="flex flex-col items-center justify-center text-center mt-12 mb-20">
-          <div className="mb-6">
-            {/* Official Project Destined Logo - Added 'invert' class to make it black */}
+        <header className="flex flex-col items-center justify-center text-center mt-6 md:mt-12 mb-12 md:mb-20">
+          <div className="mb-6 hidden md:block">
             <img
               src="https://projectdestined.com/lovable-uploads/fd84ac92-2d32-41a3-bd7c-a70d31a20a77.png"
               alt="Project Destined"
               className="h-20 object-contain invert drop-shadow-sm opacity-90"
             />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
             Project Destined AI Studio
           </h1>
-          <p className="text-gray-500 max-w-xl text-lg">
+          <p className="text-gray-500 max-w-xl text-base md:text-lg">
             Go from raw property data to working underwriting intelligence.
             Build custom AI tools to accelerate your deal flow.
           </p>
@@ -74,7 +72,6 @@ export default function Home() {
               href="/vibe-code"
               users="893"
             />
-
             <ChallengeCard
               title="Automate OM Extraction"
               desc="Build an underwriting pipeline in n8n. Parse property PDFs via webhook and extract structured intelligence to a database."
@@ -82,7 +79,6 @@ export default function Home() {
               href="/n8n-agent"
               users="412"
             />
-
             <ChallengeCard
               title="Build a Deal Sourcing List"
               desc="Build a lead list in Clay—a list of institutional buyers or sellers, ranked by live buying signals so the ones worth calling sit at the top."
