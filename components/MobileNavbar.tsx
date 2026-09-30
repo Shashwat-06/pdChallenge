@@ -17,8 +17,9 @@ export default function MobileNavbar() {
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
           <Link href="/" className="flex items-center">
+            {/* Updated to use local public folder image */}
             <img
-              src="https://projectdestined.com/lovable-uploads/fd84ac92-2d32-41a3-bd7c-a70d31a20a77.png"
+              src="/pdLogo.png"
               alt="Project Destined"
               className="h-6 object-contain invert opacity-90"
             />
