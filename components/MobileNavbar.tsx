@@ -17,11 +17,11 @@ export default function MobileNavbar() {
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
           <Link href="/" className="flex items-center">
-            {/* Updated to use local public folder image */}
+            {/* Reduced height from h-6 to h-4 (or h-5) and added w-auto for better scaling */}
             <img
               src="/pdLogo.png"
               alt="Project Destined"
-              className="h-6 object-contain invert opacity-90"
+              className="h-4 w-auto object-contain invert opacity-90"
             />
           </Link>
         </div>
