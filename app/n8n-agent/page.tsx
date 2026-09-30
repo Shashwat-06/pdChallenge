@@ -3,52 +3,74 @@ import { useState } from "react";
 import ChallengeSidebar from "@/components/ChallengeSidebar";
 import AccordionItem from "@/components/AccordionItem";
 import CopyBlock from "@/components/CopyBlock";
+import CountdownTimer from "@/components/CountdownTimer";
 import { Info, ExternalLink, Image as ImageIcon, FileJson } from "lucide-react";
 
 export default function N8nAgentChallenge() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const changeStep = (newStep: number) => {
+    if (newStep === currentStep || isTransitioning) return;
+    setCurrentStep(newStep);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsTransitioning(true);
+    setTimeout(() => setIsTransitioning(false), 500);
+  };
 
   const handleNext = () => {
-    if (currentStep < 2) setCurrentStep(currentStep + 1);
+    if (currentStep < 2) changeStep(currentStep + 1);
+  };
+  const handlePrev = () => {
+    if (currentStep > 0) changeStep(currentStep - 1);
   };
 
-  const handlePrev = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1);
-  };
+  const stepTitles = [
+    "Prepare: Automate OM Extraction Pipeline",
+    "Build: Your Automation Pipeline",
+    "Submit: Share Your Underwriting Pipeline",
+  ];
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-white text-gray-900">
+    <div className="flex flex-col md:flex-row min-h-screen bg-white md:bg-gray-50 text-gray-900 relative">
+      {isTransitioning && (
+        <div className="fixed top-[61px] md:top-0 left-0 h-1 bg-red-600 z-[100] animate-loading-bar" />
+      )}
+
       <ChallengeSidebar
         title="Automate OM Extraction"
         currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
+        changeStep={changeStep}
       />
 
-      <main className="flex-1 p-6 md:p-12 md:max-w-4xl flex flex-col">
-        <div className="flex-1">
+      <main className="flex-1 p-0 md:p-12 md:max-w-4xl flex flex-col bg-white min-h-screen shadow-sm">
+        <div className="flex-1 p-6 md:p-0">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-gray-100 pb-6">
+            <h1 className="text-2xl md:text-3xl font-bold">
+              {stepTitles[currentStep]}
+            </h1>
+            <CountdownTimer initialMinutes={45} />
+          </div>
+
           {/* STEP 0: PREPARE */}
           {currentStep === 0 && (
             <div className="animate-in fade-in duration-300">
-              <h1 className="text-3xl font-bold mb-8">
-                Build an OM Extraction Pipeline (n8n)
-              </h1>
-
-              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-8 shadow-sm">
-                <h2 className="text-xl font-bold mb-4">What you'll build</h2>
+              <div className="bg-white border border-gray-200 rounded-xl p-6 md:p-8 mb-8 shadow-sm relative overflow-hidden">
+                <h2 className="text-xl font-bold mb-4">The Problem</h2>
                 <p className="mb-4 text-gray-600">
                   Reading a 60-page Offering Memorandum to find five key metrics
-                  is a waste of an analyst's time. In this mission, you'll build
-                  a visual, automated workflow using n8n that acts as an AI
+                  is killing analyst productivity. Your mission is to build a
+                  visual, automated workflow in n8n that acts as an AI
                   data-entry agent. By the end, you’ll have:
                 </p>
                 <ul className="list-disc pl-5 space-y-2 text-gray-600 mb-8">
                   <li>
                     A live webhook endpoint that can receive property PDFs from
-                    anywhere (like a custom app or email trigger).
+                    anywhere.
                   </li>
                   <li>
                     An AI node that parses the document and extracts structured
-                    JSON (e.g., NOI, Cap Rate, Asking Price).
+                    JSON.
                   </li>
                   <li>
                     A robust, automated pipeline ready to connect to your deal
@@ -62,15 +84,15 @@ export default function N8nAgentChallenge() {
                   Why n8n for Real Estate?
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  Unlike chat interfaces (like ChatGPT or Gemini), n8n lets you
-                  build <strong>node-based automations</strong> that run in the
-                  background. You can visually connect your inbox, Google Drive,
-                  AI models, and databases in one continuous flow, creating a
-                  true "agent" that underwrites deals while you sleep.
+                  Unlike chat interfaces, n8n lets you build node-based
+                  automations that run in the background. You can visually
+                  connect your inbox, Google Drive, AI models, and databases in
+                  one continuous flow, creating a true "agent" that underwrites
+                  deals while you sleep.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 border-l-4 border-l-blue-500">
                     <h3 className="font-bold mb-2">The Architecture</h3>
                     <p className="text-sm text-gray-600 mb-3">
                       Your pipeline will follow 4 simple steps:
@@ -82,14 +104,14 @@ export default function N8nAgentChallenge() {
                       <li>Webhook Response (Returns JSON)</li>
                     </ol>
                   </div>
-                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
-                    <h3 className="font-bold mb-2">Structured Data</h3>
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 border-l-4 border-l-green-500">
+                    <h3 className="font-bold mb-2">
+                      Structured Data (The Golden Rule)
+                    </h3>
                     <p className="text-sm text-gray-600">
                       AI chats give you paragraphs of text. In this challenge,
-                      you will force the AI to return{" "}
-                      <strong>strict JSON format</strong>. This is crucial
-                      because databases (like PostgreSQL) require clean,
-                      structured data, not conversational text.
+                      you will force the AI to return strict JSON format.
+                      Conversational responses will break your pipeline.
                     </p>
                   </div>
                 </div>
@@ -100,15 +122,11 @@ export default function N8nAgentChallenge() {
           {/* STEP 1: BUILD */}
           {currentStep === 1 && (
             <div className="animate-in fade-in duration-300">
-              <h1 className="text-3xl font-bold mb-8">
-                Build your Automation Pipeline
-              </h1>
-
               <div className="border border-blue-200 bg-blue-50 rounded-lg p-6 mb-10 flex gap-4">
                 <Info className="text-blue-500 shrink-0 mt-1" size={20} />
                 <div>
                   <h2 className="font-semibold text-lg mb-2 text-blue-900">
-                    Project Brief
+                    Brief
                   </h2>
                   <p className="text-blue-800 text-sm leading-relaxed">
                     Follow the detailed steps below to wire together your n8n
@@ -120,24 +138,21 @@ export default function N8nAgentChallenge() {
               </div>
 
               <div className="mb-12">
-                <h2 className="text-2xl font-bold mb-4">Step-by-step guide</h2>
-                <p className="text-gray-600 mb-8 text-sm">
-                  Open your n8n canvas and work through these steps in order.
-                </p>
+                <h2 className="text-2xl font-bold mb-6">Step-by-step guide</h2>
 
                 {/* Phase I */}
                 <div className="mb-10">
                   <h3 className="text-xl font-bold mb-4">
-                    I. Setup the Trigger & Ingestion
+                    Level 1: Setup the Trigger & Ingestion
                   </h3>
-                  <div className="bg-white border border-gray-200 rounded-lg px-4">
+                  <div className="bg-white border border-gray-200 rounded-lg px-4 shadow-sm">
                     <AccordionItem
                       title="1. Open n8n & Create a Webhook"
                       defaultOpen={true}
                     >
                       <p className="text-sm text-gray-600 mb-4">
                         You can use n8n Cloud or download the free desktop app.
-                        Once inside, click <strong>Add Workflow</strong>.
+                        Once inside, click Add Workflow.
                       </p>
                       <a
                         href="https://n8n.io/cloud/"
@@ -178,9 +193,8 @@ export default function N8nAgentChallenge() {
 
                     <AccordionItem title="3. Extract the Document Text">
                       <p className="text-sm text-gray-600 mb-4">
-                        Webhooks receive files as "binary" data (raw computer
-                        code). Before the AI can read the OM, you must convert
-                        it into readable text.
+                        Webhooks receive files as "binary" data. Before the AI
+                        can read the OM, you must convert it into readable text.
                       </p>
                       <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
                         <li>
@@ -200,16 +214,16 @@ export default function N8nAgentChallenge() {
                 {/* Phase II */}
                 <div className="mb-10">
                   <h3 className="text-xl font-bold mb-4">
-                    II. AI Intelligence
+                    Level 2: AI Intelligence
                   </h3>
-                  <div className="bg-white border border-gray-200 rounded-lg px-4">
+                  <div className="bg-white border border-gray-200 rounded-lg px-4 shadow-sm">
                     <AccordionItem title="4. Get your API Keys">
                       <p className="text-sm text-gray-600 mb-4">
-                        You need a brain for your agent. You can use OpenAI
-                        (ChatGPT's model) or Groq (a super-fast AI model). Go to
-                        their developer platform to generate an API key.
+                        You need a brain for your agent. You can use OpenAI or
+                        Groq. Go to their developer platform to generate an API
+                        key.
                       </p>
-                      <div className="flex gap-4 mb-4">
+                      <div className="flex flex-wrap gap-4 mb-4">
                         <a
                           href="https://platform.openai.com/api-keys"
                           target="_blank"
@@ -232,9 +246,8 @@ export default function N8nAgentChallenge() {
                     <AccordionItem title="5. Connect your AI Model">
                       <p className="text-sm text-gray-600 mb-4">
                         Add an <strong>OpenAI</strong> or <strong>Groq</strong>{" "}
-                        node to your canvas. You will need to click "Create New
-                        Credential" and paste your API key from the previous
-                        step.
+                        node to your canvas. Click "Create New Credential" and
+                        paste your API key from the previous step.
                       </p>
                       <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700">
                         <li>
@@ -251,17 +264,15 @@ export default function N8nAgentChallenge() {
                     <AccordionItem title="6. Write the Extraction Prompt">
                       <p className="text-sm text-gray-600 mb-4">
                         LLMs need strict instructions. Add a "System Message" to
-                        your AI node and paste the following prompt to ensure it
-                        acts like an analyst:
+                        your AI node and paste the following prompt:
                       </p>
                       <CopyBlock text="You are a senior real estate acquisitions analyst. Analyze the provided Offering Memorandum text and extract the exact Net Operating Income (NOI), Cap Rate, Total Units, and Year Built. If a metric is missing, return null. Return ONLY valid JSON." />
                     </AccordionItem>
 
                     <AccordionItem title="7. Force JSON Output Formatting">
                       <p className="text-sm text-gray-600 mb-4">
-                        To ensure the AI doesn't include conversational text
-                        (like "Here is the data you requested:"), you must force
-                        JSON output.
+                        To ensure the AI doesn't include conversational text,
+                        you must force JSON output.
                       </p>
                       <div className="bg-gray-50 border border-gray-200 p-4 rounded-md mt-2">
                         <strong className="text-sm text-gray-900">
@@ -282,9 +293,9 @@ export default function N8nAgentChallenge() {
                 {/* Phase III */}
                 <div className="mb-10">
                   <h3 className="text-xl font-bold mb-4">
-                    III. Output & Debugging
+                    Level 3: Output & Debugging
                   </h3>
-                  <div className="bg-white border border-gray-200 rounded-lg px-4">
+                  <div className="bg-white border border-gray-200 rounded-lg px-4 shadow-sm">
                     <AccordionItem title="8. Respond to Webhook">
                       <p className="text-sm text-gray-600 mb-4">
                         Your AI has the data, but you need to send it back to
@@ -315,8 +326,7 @@ export default function N8nAgentChallenge() {
                           <strong>Webhook node</strong>. Open the settings,
                           check the box for{" "}
                           <code>Respond with CORS headers</code>, and set the
-                          allowed origins to <code>*</code>. This is a very
-                          common trap for beginners!
+                          allowed origins to <code>*</code>.
                         </p>
                       </div>
                     </AccordionItem>
@@ -326,21 +336,19 @@ export default function N8nAgentChallenge() {
                         It's time to run it! Click "Execute Workflow" at the
                         bottom of the screen.
                       </p>
-                      <p className="text-sm text-gray-600 mb-4">
-                        Then, use a tool like Postman to send a test POST
-                        request with a sample PDF to your Webhook URL.
-                      </p>
                       <a
                         href="https://www.postman.com/"
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full mt-2 mb-4 transition-colors"
+                        className="inline-flex items-center gap-2 text-sm font-semibold bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full mb-4 transition-colors"
                       >
                         Download Postman <ExternalLink size={14} />
                       </a>
                       <p className="text-sm text-gray-600">
-                        Watch the nodes light up green one by one, and verify
-                        that the final output is clean, parsed JSON!
+                        Use Postman to send a test POST request with a sample
+                        PDF to your Webhook URL. Watch the nodes light up green
+                        one by one, and verify that the final output is clean,
+                        parsed JSON!
                       </p>
                     </AccordionItem>
                   </div>
@@ -352,14 +360,6 @@ export default function N8nAgentChallenge() {
           {/* STEP 2: SUBMIT */}
           {currentStep === 2 && (
             <div className="animate-in fade-in duration-300">
-              <h1 className="text-3xl font-bold mb-4">
-                Submit your Automation
-              </h1>
-              <p className="text-gray-500 mb-8">
-                Share your underwriting pipeline with the PD community to prove
-                your automation skills.
-              </p>
-
               <div className="space-y-6 max-w-2xl bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
                 <div>
                   <label className="block text-sm font-bold text-gray-900 mb-2">
@@ -397,9 +397,8 @@ export default function N8nAgentChallenge() {
                     <span className="text-red-500">*</span>
                   </label>
                   <p className="text-xs text-gray-500 mb-2">
-                    In n8n, select all your nodes, press Ctrl+C (or Cmd+C), and
-                    paste the raw JSON code below so others can import your
-                    workflow.
+                    Select all nodes in n8n, copy (Cmd+C), and paste the raw
+                    JSON code below to prove functionality.
                   </p>
                   <textarea
                     rows={6}
@@ -419,9 +418,7 @@ export default function N8nAgentChallenge() {
                     htmlFor="showcase"
                     className="text-sm text-green-900 font-medium leading-relaxed"
                   >
-                    Submit to the PD Showcase and receive your AI Automation
-                    badge. (Make sure you have removed any hardcoded API keys
-                    from your JSON export!)
+                    Submit to the PD Showcase. (Make sure API keys are removed!)
                   </label>
                 </div>
               </div>
@@ -429,7 +426,6 @@ export default function N8nAgentChallenge() {
           )}
         </div>
 
-        {/* Working Nav Buttons */}
         <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-100 mt-auto">
           {currentStep > 0 ? (
             <button

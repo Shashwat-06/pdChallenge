@@ -3,88 +3,89 @@ import { useState } from "react";
 import ChallengeSidebar from "@/components/ChallengeSidebar";
 import AccordionItem from "@/components/AccordionItem";
 import CopyBlock from "@/components/CopyBlock";
+import CountdownTimer from "@/components/CountdownTimer";
 import { Info, ExternalLink, Image as ImageIcon } from "lucide-react";
 
 export default function ClaySourcingChallenge() {
   const [currentStep, setCurrentStep] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const changeStep = (newStep: number) => {
+    if (newStep === currentStep || isTransitioning) return;
+    setCurrentStep(newStep);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setIsTransitioning(true);
+    setTimeout(() => setIsTransitioning(false), 500);
+  };
 
   const handleNext = () => {
-    if (currentStep < 2) setCurrentStep(currentStep + 1);
+    if (currentStep < 2) changeStep(currentStep + 1);
+  };
+  const handlePrev = () => {
+    if (currentStep > 0) changeStep(currentStep - 1);
   };
 
-  const handlePrev = () => {
-    if (currentStep > 0) setCurrentStep(currentStep - 1);
-  };
+  const stepTitles = [
+    "Prepare: Build a Deal Sourcing List",
+    "Build: Your Target List",
+    "Submit: Share Your Strategy",
+  ];
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-white text-gray-900">
+    <div className="flex flex-col md:flex-row min-h-screen bg-white md:bg-gray-50 text-gray-900 relative">
+      {isTransitioning && (
+        <div className="fixed top-[61px] md:top-0 left-0 h-1 bg-red-600 z-[100] animate-loading-bar" />
+      )}
+
       <ChallengeSidebar
         title="Build a Deal Sourcing List"
         currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
+        changeStep={changeStep}
       />
 
-      <main className="flex-1 p-6 md:p-12 md:max-w-4xl flex flex-col">
-        <div className="flex-1">
+      <main className="flex-1 p-0 md:p-12 md:max-w-4xl flex flex-col bg-white min-h-screen shadow-sm">
+        <div className="flex-1 p-6 md:p-0">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 border-b border-gray-100 pb-6">
+            <h1 className="text-2xl md:text-3xl font-bold">
+              {stepTitles[currentStep]}
+            </h1>
+            <CountdownTimer initialMinutes={25} />
+          </div>
+
           {/* STEP 0: PREPARE */}
           {currentStep === 0 && (
             <div className="animate-in fade-in duration-300">
-              <h1 className="text-3xl font-bold mb-8">
-                Build a Lead List and Rank Your Targets
-              </h1>
-
-              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-8 shadow-sm">
-                <h2 className="text-xl font-bold mb-4">What you'll build</h2>
+              <div className="bg-white border border-gray-200 rounded-xl p-8 mb-8 shadow-sm relative overflow-hidden">
+                <h2 className="text-xl font-bold mb-4">The Objective</h2>
                 <p className="text-gray-600 mb-4">
-                  In this mission you'll build a lead list in Clay — a list of
-                  real estate firms, institutional buyers, or developers that
-                  could become clients or partners, ranked so the ones worth
-                  contacting sit at the top.
+                  In commercial real estate, finding the right buyer or
+                  off-market seller is half the battle. Your mission is to build
+                  a hyper-targeted lead list in Clay—and rank them based on{" "}
+                  <strong>real-time buying signals</strong> so the hottest
+                  prospects sit at the top.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  No acquisitions or brokerage role yet? Pick a commercial real
-                  estate firm you'd love to work for and run this exercise as if
-                  you already had a seat on their deal desk. Build the account
-                  list and prioritize outreach the way their team actually
-                  would.
+                  Run this exercise as if you have a live deal on the desk and
+                  need to generate 5 high-probability call targets for your MD.
                 </p>
-                <ul className="list-disc pl-5 space-y-2 text-gray-600 mb-8">
-                  <li>
-                    <strong>Time:</strong> about 25 minutes
-                  </li>
-                  <li>
-                    <strong>You'll need:</strong> a Clay account (the free trial
-                    is enough)
-                  </li>
-                </ul>
               </div>
 
               <div className="mb-8">
-                <h2 className="text-xl font-bold mb-4">What you're learning</h2>
-                <p className="text-gray-600 mb-6">
-                  Clay can surface more companies and signals than you could
-                  ever act on. The ongoing skill you'll use is the ability to
-                  apply strict real estate filters, synthesize results, and
-                  ultimately make the final decision about what should be
-                  prioritized.
-                </p>
-
+                <h2 className="text-xl font-bold mb-4">The Methodology</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
-                    <h3 className="font-bold mb-2">The Search Loop</h3>
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 border-t-4 border-t-blue-500">
+                    <h3 className="font-bold mb-2">Finding the Needle</h3>
                     <p className="text-sm text-gray-600">
-                      The build is one short loop. You write a one-sentence
-                      definition and describe it to Clay in plain words, and
-                      Clay drafts the filters. You tighten the filters and cut
-                      whatever slipped through.
+                      Transition from generic searches to highly actionable ones
+                      ("Family offices in Dallas investing in Value-Add").
                     </p>
                   </div>
-                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100">
+                  <div className="bg-gray-50 p-6 rounded-lg border border-gray-100 border-t-4 border-t-orange-500">
                     <h3 className="font-bold mb-2">Ranking Signals</h3>
                     <p className="text-sm text-gray-600">
-                      Clay can surface several kinds of signal: hiring, a new
-                      leader, active research, fresh funding. Which one is worth
-                      tracking depends on your target's actual buying trigger.
+                      A list of names isn't enough. Use AI to scan the web for
+                      triggers: Did they just hire a Head of Acquisitions? Did
+                      they close a fund?
                     </p>
                   </div>
                 </div>
@@ -95,15 +96,11 @@ export default function ClaySourcingChallenge() {
           {/* STEP 1: BUILD */}
           {currentStep === 1 && (
             <div className="animate-in fade-in duration-300">
-              <h1 className="text-3xl font-bold mb-8">
-                Build Your Target List
-              </h1>
-
               <div className="border border-blue-200 bg-blue-50 rounded-lg p-6 mb-10 flex gap-4">
                 <Info className="text-blue-500 shrink-0 mt-1" size={20} />
                 <div>
                   <h2 className="font-semibold text-lg mb-2 text-blue-900">
-                    Project Brief
+                    Brief
                   </h2>
                   <p className="text-blue-800 text-sm leading-relaxed">
                     Build a target account list of 25 real estate firms that fit
@@ -115,21 +112,19 @@ export default function ClaySourcingChallenge() {
               </div>
 
               <div className="mb-12">
-                <h2 className="text-2xl font-bold mb-4">Step-by-step guide</h2>
+                <h2 className="text-2xl font-bold mb-6">Step-by-step guide</h2>
 
                 {/* Phase I */}
                 <div className="mb-10">
                   <h3 className="text-xl font-bold mb-4">
-                    I. Define and Search
+                    Level 1: Define and Search
                   </h3>
-                  <div className="bg-white border border-gray-200 rounded-lg px-4">
+                  <div className="bg-white border border-gray-200 rounded-lg px-4 shadow-sm">
                     <AccordionItem title="1. Open Clay and set up your trial">
                       <p className="text-sm text-gray-600 mb-4">
                         Go to clay.com and sign up with your email. The 14-day
-                        trial should not require a credit card. After the video
-                        orientation, you'll answer one more question and select{" "}
-                        <strong>Start building</strong> to open your new
-                        workspace.
+                        trial should not require a credit card. Select{" "}
+                        <strong>Start building</strong> to open your workspace.
                       </p>
                       <a
                         href="https://clay.com"
@@ -147,8 +142,7 @@ export default function ClaySourcingChallenge() {
                     >
                       <p className="text-sm text-gray-600 mb-4">
                         Before touching any search tool, make sure you can
-                        articulate what defines the target for your search. Use
-                        this shape:
+                        articulate what defines the target for your search.
                       </p>
                       <CopyBlock text="Companies that [do a specific thing], in [a city or region], with [a size range], because [why they would be a good fit for your CRE deal or service]." />
                       <div className="bg-gray-50 border border-gray-200 p-4 rounded-md mt-4">
@@ -205,24 +199,20 @@ export default function ClaySourcingChallenge() {
                 {/* Phase II */}
                 <div className="mb-10">
                   <h3 className="text-xl font-bold mb-4">
-                    II. Tighten and Save
+                    Level 2: Tighten and Save
                   </h3>
-                  <div className="bg-white border border-gray-200 rounded-lg px-4">
+                  <div className="bg-white border border-gray-200 rounded-lg px-4 shadow-sm">
                     <AccordionItem title="4. Tighten the filters and prune the results">
                       <p className="text-sm text-gray-600 mb-4">
-                        Clay drafted filters from your words. Now check its work
-                        against your definition sentence. Industry labels are
-                        self-reported and broad, so a firm can carry the right
-                        label and still do something different from what you
-                        meant.
+                        Clay drafted filters from your words. Now check its
+                        work. Industry labels are self-reported and broad.
                       </p>
                       <ul className="list-disc pl-5 space-y-2 text-sm text-gray-700 mb-4">
                         <li>
                           <strong>Find the impostor:</strong> Scan the table for
-                          at least one company that technically matches your
-                          filters but doesn't belong (e.g., a residential
-                          mortgage broker). Work out which filter let it in,
-                          then tighten that filter.
+                          a company that technically matches but doesn't belong
+                          (e.g., a residential mortgage broker). Tighten the
+                          filter to drop them.
                         </li>
                         <li>
                           <strong>Check a known good:</strong> Think of one firm
@@ -264,9 +254,9 @@ export default function ClaySourcingChallenge() {
                 {/* Phase III */}
                 <div className="mb-10">
                   <h3 className="text-xl font-bold mb-4">
-                    III. Find your Signal
+                    Level 3: Find your Signal
                   </h3>
-                  <div className="bg-white border border-gray-200 rounded-lg px-4">
+                  <div className="bg-white border border-gray-200 rounded-lg px-4 shadow-sm">
                     <AccordionItem title="6. Pick the signal that matters most">
                       <p className="text-sm text-gray-600 mb-4">
                         A Clay signal alerts you to changes at a company or with
@@ -312,14 +302,13 @@ export default function ClaySourcingChallenge() {
                 {/* Phase IV */}
                 <div className="mb-10">
                   <h3 className="text-xl font-bold mb-4">
-                    IV. Rank and Decide
+                    Level 4: Rank and Decide
                   </h3>
-                  <div className="bg-white border border-gray-200 rounded-lg px-4">
+                  <div className="bg-white border border-gray-200 rounded-lg px-4 shadow-sm">
                     <AccordionItem title="8. Make the cut to five & assign an action">
                       <p className="text-sm text-gray-600 mb-4">
                         Clay surfaced the candidates. Choosing which five matter
-                        this week is your job. Consider freshness (is the
-                        evidence from the last month?) and fit.
+                        this week is your job. Consider freshness and fit.
                       </p>
                       <p className="text-sm text-gray-600 mb-4">
                         Finish each of the five lines with what you'll do about
@@ -349,18 +338,10 @@ export default function ClaySourcingChallenge() {
           {/* STEP 2: SUBMIT */}
           {currentStep === 2 && (
             <div className="animate-in fade-in duration-300">
-              <h1 className="text-3xl font-bold mb-4">
-                Submit your Target List
-              </h1>
-              <p className="text-gray-500 mb-8">
-                Show off your data-driven sourcing strategy to your network and
-                potential employers.
-              </p>
-
               <div className="space-y-6 max-w-2xl bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
                 <div>
                   <label className="block text-sm font-bold text-gray-900 mb-2">
-                    Project Title <span className="text-red-500">*</span>
+                    Target List Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
@@ -374,17 +355,14 @@ export default function ClaySourcingChallenge() {
                     Clay Table Screenshot{" "}
                     <span className="text-red-500">*</span>
                   </label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-10 text-center bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors flex flex-col items-center justify-center gap-3">
-                    <ImageIcon className="text-gray-400" size={32} />
-                    <div>
-                      <p className="text-sm text-gray-700 font-bold">
-                        Upload a screenshot of your ranked Clay table
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Ensure the screenshot shows your Top 5 targets and the
-                        active "Signal" column (e.g., Hiring, News).
-                      </p>
-                    </div>
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-10 text-center bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors">
+                    <ImageIcon
+                      className="text-gray-400 mx-auto mb-3"
+                      size={32}
+                    />
+                    <p className="text-sm text-gray-700 font-bold">
+                      Upload a screenshot of your ranked Clay table
+                    </p>
                   </div>
                 </div>
 
@@ -396,11 +374,8 @@ export default function ClaySourcingChallenge() {
                   <textarea
                     rows={5}
                     className="w-full border border-gray-300 rounded-lg p-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-black resize-none"
-                    placeholder="Briefly describe the lead list you built and the criteria you used to search and filter. How will this be useful to your deal desk? What 'Next Action' did you set?"
+                    placeholder="1. Who was the target? 2. What Buying Signal did you use? 3. What is the Next Action?"
                   ></textarea>
-                  <p className="text-xs text-gray-500 mt-2 text-right">
-                    0/500 characters
-                  </p>
                 </div>
 
                 <div className="flex items-center gap-3 bg-blue-50 p-4 rounded-lg border border-blue-100">
@@ -414,8 +389,7 @@ export default function ClaySourcingChallenge() {
                     htmlFor="showcase"
                     className="text-sm text-blue-900 font-medium"
                   >
-                    Share to Showcase (Showcase projects are public and earn
-                    your AI project builder badge).
+                    Submit to the PD Showcase.
                   </label>
                 </div>
               </div>
@@ -423,7 +397,6 @@ export default function ClaySourcingChallenge() {
           )}
         </div>
 
-        {/* Working Nav Buttons */}
         <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-100 mt-auto">
           {currentStep > 0 ? (
             <button
