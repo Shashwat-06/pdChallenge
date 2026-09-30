@@ -1,25 +1,27 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Timer, Trophy } from "lucide-react";
+import { Timer } from "lucide-react";
 
 export default function CountdownTimer({
-  initialMinutes = 30,
+  initialMinutes = 45,
+  isActive = false,
 }: {
   initialMinutes?: number;
+  isActive?: boolean;
 }) {
   const [timeLeft, setTimeLeft] = useState(initialMinutes * 60);
 
   useEffect(() => {
-    if (timeLeft <= 0) return;
+    if (!isActive || timeLeft <= 0) return;
     const interval = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
     }, 1000);
     return () => clearInterval(interval);
-  }, [timeLeft]);
+  }, [timeLeft, isActive]);
 
   const mins = Math.floor(timeLeft / 60);
   const secs = timeLeft % 60;
-  const isLow = timeLeft < 300; // turns red under 5 minutes
+  const isLow = timeLeft < 300;
 
   return (
     <div
@@ -34,16 +36,6 @@ export default function CountdownTimer({
         <span>
           {mins.toString().padStart(2, "0")}:{secs.toString().padStart(2, "0")}
         </span>
-      </div>
-      <div
-        className={`w-[1px] h-4 ${isLow ? "bg-red-200" : "bg-gray-700"}`}
-      ></div>
-      <div className="flex items-center gap-1.5">
-        <Trophy
-          size={14}
-          className={isLow ? "text-red-500" : "text-yellow-400"}
-        />
-        <span>250 XP</span>
       </div>
     </div>
   );

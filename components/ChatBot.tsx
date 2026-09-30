@@ -59,11 +59,11 @@ const CodeBlock = ({ inline, className, children, ...props }: any) => {
 
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(true); // New state to control the floating bubble
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
-      content:
-        "Hello! I am the Project Destined AI Assistant. Stuck on a challenge or need help debugging your automation? Ask me anything.",
+      content: "Hi I'm PD AI assistant.", // Updated default greeting
     },
   ]);
   const [input, setInput] = useState("");
@@ -258,14 +258,44 @@ export default function ChatBot() {
         </div>
       )}
 
-      {/* Floating Action Button */}
+      {/* Floating Action Button & Greeting Tooltip */}
       {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-black hover:bg-gray-800 text-white p-4 rounded-full shadow-xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
-        >
-          <MessageSquare size={24} />
-        </button>
+        <div className="relative flex flex-col items-end animate-in fade-in zoom-in duration-300">
+          {/* Enhanced Floating Speech Bubble */}
+          {showGreeting && (
+            <div className="relative mb-3 mr-2 group">
+              <div className="bg-white border border-gray-200 text-gray-800 text-sm py-2.5 px-4 rounded-2xl shadow-lg flex items-center gap-3 pr-8">
+                <span className="font-semibold tracking-tight">
+                  Hi I'm PD AI assistant. 👋
+                </span>
+
+                {/* Dismiss Button */}
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowGreeting(false);
+                  }}
+                  className="absolute right-2 text-gray-400 hover:text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-full p-1 transition-colors"
+                >
+                  <X size={12} strokeWidth={3} />
+                </button>
+              </div>
+
+              {/* Tooltip Tail pointing to the button */}
+              <div className="absolute -bottom-2 right-4 w-4 h-4 bg-white border-b border-r border-gray-200 transform rotate-45 shadow-[2px_2px_2px_rgba(0,0,0,0.05)]"></div>
+            </div>
+          )}
+
+          <button
+            onClick={() => {
+              setIsOpen(true);
+              setShowGreeting(false); // Hide the tooltip once they open the chat
+            }}
+            className="bg-black hover:bg-gray-800 text-white p-4 rounded-full shadow-xl transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
+          >
+            <MessageSquare size={24} />
+          </button>
+        </div>
       )}
     </div>
   );
