@@ -57,11 +57,11 @@ export default function Home() {
       <GlobalSidebar />
       <MobileNavbar />
       <main className="flex-1 p-6 md:p-12 md:max-w-6xl mx-auto overflow-y-auto">
-        {/* Changed md:mt-2 to md:-mt-6 to pull the logo up and align it perfectly with the sidebar */}
         <header className="flex flex-col items-center justify-center text-center mt-6 md:-mt-6 mb-12 md:mb-20">
           <div className="mb-6 hidden md:block">
+            {/* Updated to use local public folder image */}
             <img
-              src="https://projectdestined.com/lovable-uploads/fd84ac92-2d32-41a3-bd7c-a70d31a20a77.png"
+              src="/pdLogo.png"
               alt="Project Destined"
               className="h-20 object-contain invert drop-shadow-sm opacity-90"
             />

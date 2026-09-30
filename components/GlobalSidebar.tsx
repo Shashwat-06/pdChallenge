@@ -4,11 +4,10 @@ import { Hash } from "lucide-react";
 export default function GlobalSidebar() {
   return (
     <aside className="w-64 border-r border-gray-200 h-screen sticky top-0 p-4 bg-gray-50 shrink-0 hidden md:block">
-      {/* Applied the same mt-6 md:mt-2 top margin here to match the main page */}
       <div className="flex items-center gap-2 mb-8 px-2 mt-6 md:mt-2">
-        {/* Project Destined Logo scaled for the sidebar */}
+        {/* Updated to use local public folder image */}
         <img
-          src="https://projectdestined.com/lovable-uploads/fd84ac92-2d32-41a3-bd7c-a70d31a20a77.png"
+          src="/pdLogo.png"
           alt="Project Destined"
           className="h-8 object-contain invert opacity-90"
         />
