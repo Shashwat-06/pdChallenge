@@ -2,25 +2,21 @@ import GlobalSidebar from "@/components/GlobalSidebar";
 import MobileNavbar from "@/components/MobileNavbar";
 import ChallengeCard from "@/components/ChallengeCard";
 
-const GoogleIcon = (
-  <svg viewBox="0 0 24 24" width="24" height="24">
-    <path
-      fill="#4285F4"
-      d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-    />
-    <path
-      fill="#34A853"
-      d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-    />
-    <path
-      fill="#FBBC05"
-      d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-    />
-    <path
-      fill="#EA4335"
-      d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-    />
-  </svg>
+// Standardized all logos using the reliable Favicon CDN approach
+const GeminiIcon = (
+  <img
+    src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://gemini.google.com&size=256"
+    alt="Google Gemini"
+    className="w-7 h-7 rounded object-contain"
+  />
+);
+
+const NotebookLMIcon = (
+  <img
+    src="https://unpkg.com/@lobehub/icons-static-svg/icons/notebooklm.svg"
+    alt="NotebookLM"
+    className="w-7 h-7 rounded object-contain"
+  />
 );
 
 const N8nIcon = (
@@ -39,14 +35,30 @@ const ClayIcon = (
   />
 );
 
+const ApifyIcon = (
+  <img
+    src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://apify.com&size=256"
+    alt="Apify"
+    className="w-7 h-7 rounded object-contain"
+  />
+);
+
+const MakeIcon = (
+  <img
+    src="https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://make.com&size=256"
+    alt="Make.com"
+    className="w-7 h-7 rounded object-contain"
+  />
+);
+
 export default function Home() {
   return (
-    // Changed flex direction so it stacks on mobile and is side-by-side on desktop
     <div className="flex flex-col md:flex-row min-h-screen bg-white text-black">
       <GlobalSidebar />
       <MobileNavbar />
       <main className="flex-1 p-6 md:p-12 md:max-w-6xl mx-auto overflow-y-auto">
-        <header className="flex flex-col items-center justify-center text-center mt-6 md:mt-12 mb-12 md:mb-20">
+        {/* Changed md:mt-2 to md:-mt-6 to pull the logo up and align it perfectly with the sidebar */}
+        <header className="flex flex-col items-center justify-center text-center mt-6 md:-mt-6 mb-12 md:mb-20">
           <div className="mb-6 hidden md:block">
             <img
               src="https://projectdestined.com/lovable-uploads/fd84ac92-2d32-41a3-bd7c-a70d31a20a77.png"
@@ -55,11 +67,13 @@ export default function Home() {
             />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-            Project Destined AI Studio
+            AI & Automation Challenges
           </h1>
-          <p className="text-gray-500 max-w-xl text-base md:text-lg">
-            Go from raw property data to working underwriting intelligence.
-            Build custom AI tools to accelerate your deal flow.
+          <p className="text-gray-500 max-w-2xl text-base md:text-lg leading-relaxed">
+            Building the next generation of owners through experiential
+            learning. Complete these technical challenges to gain practical
+            skills, build custom real estate tools, and earn digital badges to
+            showcase on your LinkedIn profile.
           </p>
         </header>
 
@@ -68,7 +82,7 @@ export default function Home() {
             <ChallengeCard
               title="Vibe Code a Deal Analyst"
               desc="Build an AI app that digests offering memorandums, extracts Cap Rates, and drafts investment committee memos."
-              icon={GoogleIcon}
+              icon={GeminiIcon}
               href="/vibe-code"
               users="893"
             />
@@ -85,6 +99,27 @@ export default function Home() {
               icon={ClayIcon}
               href="/clay-sourcing"
               users="256"
+            />
+            <ChallengeCard
+              title="Zoning Due Diligence Screener"
+              desc="Use Google NotebookLM to parse 300-page municipal zoning codes, extracting Floor Area Ratios and setbacks without hallucination."
+              icon={NotebookLMIcon}
+              href="/zoning-screener"
+              users="642"
+            />
+            <ChallengeCard
+              title="Automate Rent Comp Tracking"
+              desc="Build a headless web scraper in Apify to monitor competitor leasing sites and pipe live rent prices directly to Airtable."
+              icon={ApifyIcon}
+              href="/rent-comp-tracker"
+              users="389"
+            />
+            <ChallengeCard
+              title="Automate IC Slide Decks"
+              desc="Connect Google Sheets to Google Slides using Make.com. Generate branded Investment Committee pitch decks instantly from underwriting data."
+              icon={MakeIcon}
+              href="/ic-deck-generator"
+              users="512"
             />
           </div>
         </section>

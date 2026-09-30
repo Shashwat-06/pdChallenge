@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Project Destined AI Studio",
+  title: "Project Destined | AI & Automation Challenges",
   description:
-    "Go from raw property data to working underwriting intelligence. Build custom AI tools to accelerate your commercial real estate deal flow.",
+    "Building the next generation of owners through experiential learning. Complete technical challenges to gain practical skills, build custom real estate AI tools, and earn badges to share on LinkedIn.",
   keywords: [
     "Project Destined",
     "Real Estate AI",
+    "Experiential Learning",
     "Underwriting",
-    "Deal Flow",
-    "AI Agents",
+    "Automation",
   ],
 };
 
